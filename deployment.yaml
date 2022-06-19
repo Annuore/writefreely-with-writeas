@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: write-deploy 
+  labels:
+    app: writefreely
+spec: 
+  replicas: 1
+  template:
+    metadata: 
+      name: writefreely
+      labels:
+        app: writefreely
+    spec:
+      initContainers:
+      - image: writeas/writefreely
+        name: write-init
+        command: ["/bin/sh", "-c", "/go/cmd/writefreely/writefreely -c /go/config.ini db init" ] 
+        volumeMounts:
+        - name: config-volume
+          mountPath: /go/config.ini
+          subPath: config.ini
+      - image: writeas/writefreely
+        name: write-init0
+        command: ["/bin/sh", "-c", "/go/cmd/writefreely/writefreely -c /go/config.ini keys generate" ]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /go/config.ini
+          subPath: config.ini
+        - name: key-vol
+          mountPath: /go/keys
+          subPath: keys 
+      containers:
+      - image: writeas/writefreely
+        name: write-web
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config-volume
+          mountPath: /go/config.ini
+          subPath: config.ini
+        - name: key-vol
+          mountPath: /go/keys
+          subPath: keys          
+      volumes:
+        - name: config-volume
+          configMap:
+           name: write-config
+        - name: key-vol
+  selector: 
+    matchLabels:
+      app: writefreely
+
+--- 
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: writedb-ss
+spec:
+  serviceName: writedb-svc
+  selector:
+    matchLabels:
+     app: writedb
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  # podManagementPolicy: OrderedReady
+  template:
+    metadata:
+      labels:
+        app: writedb
+    spec:
+      containers:
+      - image: mariadb:latest
+        name: mariadb
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql/data  
+        # command: ["/bin/sh", "-c"]
+        # args: "socket = /var/run/mysqld/mysqld.sock"
+        # args: "sudo systemctl restart mysql"
+        # args:
+        # # - "mysql start"
+        # - "exec mysql -u root -pchangeme writefreely"
+        env: 
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom: 
+            configMapKeyRef:
+              name: write-config
+              key: MYSQL_ROOT_PASSWORD   
+        - name: MYSQL_DATABASE
+          valueFrom: 
+            configMapKeyRef:
+              name: write-config
+              key: MYSQL_DATABASE 
+        ports:
+        - containerPort: 3306         
+      volumes: 
+      - name: db-data
