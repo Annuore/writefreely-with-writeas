@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: 
+  name: writefreely
+  namespace: argocd
+spec: 
+  project: default
+  source: 
+    repoURL: https://github.com/Annuore/writefreely-with-writeas
+    targetRevision: master 
+    path: .
+  destination: 
+   server: https://kubernetes.default.svc
+   namespace: default 
+  syncPolicy:
+   automated:
+    prune: true 
+    selfHeal: true 
