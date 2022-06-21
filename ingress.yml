@@ -4,11 +4,10 @@ metadata:
   name: write-ing
   annotations:
     kubernetes.io/ingress.allow-http: "true"
-    kubernetes.io/ingress.class: nginx
   labels:
     app: writefreely
 spec: 
-  # ingressClassName: nginx
+  ingressClassName: nginx
   defaultBackend:
     service:
       name: write-svc
