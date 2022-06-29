@@ -10,9 +10,11 @@ spec:
     targetRevision: master 
     path: app-of-apps
   destination: 
-   server: https://kubernetes.default.svc
-   namespace: argocd 
+    server: https://kubernetes.default.svc
+    namespace: argocd 
   syncPolicy:
-   automated:
-    prune: true 
-    selfHeal: true 
+    automated:
+     prune: true 
+     selfHeal: true 
+    syncOptions:
+    - CreateNamespace=true
