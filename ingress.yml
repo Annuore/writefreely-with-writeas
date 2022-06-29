@@ -1,27 +1,27 @@
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress 
-# metadata: 
-#   name: write-ing
-#   annotations:
-#     kubernetes.io/ingress.allow-http: "true"
-#   labels:
-#     app: writefreely
-# spec: 
-#   ingressClassName: nginx
-#   defaultBackend:
-#     service:
-#       name: write-svc
-#       port:
-#         number: 8080
-#   # rules:
-#   # - host: k8sfirstnameandlastname.local
-#   #   http:
-#   #    paths:
-#   #    - path: /*
-#   #      pathType: Prefix
-#   #      backend:
-#   #        service:
-#   #          name: write-svc
-#   #          port:
-#   #           number: 8080
+apiVersion: networking.k8s.io/v1
+kind: Ingress 
+metadata: 
+  name: write-ing
+  annotations:
+    kubernetes.io/ingress.allow-http: "true"
+  labels:
+    app: writefreely
+spec: 
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: write-svc
+      port:
+        number: 8080
+  # rules:
+  # - host: k8sfirstnameandlastname.local
+  #   http:
+  #    paths:
+  #    - path: /*
+  #      pathType: Prefix
+  #      backend:
+  #        service:
+  #          name: write-svc
+  #          port:
+  #           number: 8080
         
