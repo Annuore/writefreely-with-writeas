@@ -9,9 +9,9 @@ spec:
     repoURL: https://github.com/Annuore/helm-k8s.git
     targetRevision: master 
     path: .
-    # helm:
-    #   valueFiles:
-    #   - overrides.yaml
+    helm:
+      valueFiles:
+      - overrides.yaml
   destination: 
    server: https://kubernetes.default.svc
    namespace: ingress-nginx 
