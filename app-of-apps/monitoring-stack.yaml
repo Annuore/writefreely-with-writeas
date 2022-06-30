@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/Annuore/Kutt-url-shortener.git
     targetRevision: master
-    path: helm/loki-stack
+    path: loki-stack
     helm:
       valueFiles:
         - dev-values.yaml
