@@ -1,18 +1,18 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata: 
-#   name: kutt-app
-#   namespace: argocd
-# spec: 
-#   project: default
-#   source: 
-#     repoURL: https://github.com/Annuore/Kutt-url-shortener.git
-#     targetRevision: master 
-#     path: .
-#   destination: 
-#    server: https://kubernetes.default.svc
-#    namespace: default 
-#   syncPolicy:
-#    automated:
-#     prune: true 
-#     selfHeal: true 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: 
+  name: kutt-app
+  namespace: argocd
+spec: 
+  project: default
+  source: 
+    repoURL: https://github.com/Annuore/Kutt-url-shortener.git
+    targetRevision: master 
+    path: .
+  destination: 
+   server: https://kubernetes.default.svc
+   namespace: default 
+  syncPolicy:
+   automated:
+    prune: true 
+    selfHeal: true 
